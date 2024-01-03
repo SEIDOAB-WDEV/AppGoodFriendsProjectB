@@ -7,5 +7,12 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <ul>
+        @foreach (var item in Model.friendsByCountry)
+            {
+                <li>@item.Country  @item.Cities.Sum(f => f.NrFriends);</li>
+            }
+    </ul>
 </div>
 
