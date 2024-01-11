@@ -47,15 +47,19 @@ namespace AppRazor.Pages
             Friend = await _service.ReadFriendAsync(null, FriendId, false);
 
             //Create a new Pet and set an owner
+            //in project case via Input Model
             IPet pet = new csPet().Seed(_seeder);
             pet.Friend = Friend;
 
+
             //Create the Pet in the database
+            //in project case via New button submit
             var dtoPet = new csPetCUdto(pet);
             dtoPet.PetId = null;
             pet = await _service.CreatePetAsync(null, dtoPet);
 
             //Update the Friend by dto
+            //in project case via New button submit
             var dtoFriend = new csFriendCUdto(Friend);
             dtoFriend.PetsId.Add(pet.PetId);
             Friend = await _service.UpdateFriendAsync(null, dtoFriend);
@@ -79,6 +83,109 @@ namespace AppRazor.Pages
             //Update the Friend by dto
             var dtoFriend = new csFriendCUdto(Friend);
             dtoFriend.QuotesId.Add(quote.QuoteId);
+            Friend = await _service.UpdateFriendAsync(null, dtoFriend);
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostEditFriend()
+        {
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            //Edit Friend
+            //in project case via Edit button submit and find Friend by Id
+            Friend.FirstName = "Happy";
+            Friend.LastName = "Joy";
+
+            //Update the Friend by dto
+            var dtoFriend = new csFriendCUdto(Friend);
+            Friend = await _service.UpdateFriendAsync(null, dtoFriend);
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostEditPet()
+        {
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            //Find first Pet
+            //in project case via Edit button submit and find Pet by Id
+            var pet = Friend.Pets.First();
+
+            //Change name
+            pet.Name = "Wanda";
+            pet.Kind = enAnimalKind.Fish;
+            pet.Mood = enAnimalMood.Happy;
+
+            //Update the Pet in the database
+            //in project case via Edit button submit and find Pet by Id
+            var dtoPet = new csPetCUdto(pet);
+            pet = await _service.UpdatePetAsync(null, dtoPet);
+
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostEditQuote()
+        {
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            //Find first Quote
+            //in project case via Edit button submit and find quote by Id
+            var quoute = Friend.Quotes.First();
+
+            //Change name
+            quoute.Quote = "Wanda Wanda";
+            quoute.Author = "Simba";
+
+            //Update the Quote in the database
+            //in project case via Edit button submit and find Quote by Id
+            var dtoQuote = new csQuoteCUdto(quoute);
+            quoute = await _service.UpdateQuoteAsync(null, dtoQuote);
+
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostDeletePet()
+        {
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            //Find last Pet
+            //in project case via delete button submit and find Pet by Id
+            var pet = Friend.Pets.Last();
+
+            //Delete the Pet in the database
+            //in project case via Delete button submit and find Pet by Id
+            pet = await _service.DeletePetAsync(null, pet.PetId);
+
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostDeleteQuote()
+        {
+            //Reload Friend from the database
+            Friend = await _service.ReadFriendAsync(null, FriendId, false);
+
+            //Find last Quote
+            //in project case via delete button submit and find Quote by Id
+            var quote = Friend.Quotes.Last();
+
+            //Update the Friend by dto
+            var dtoFriend = new csFriendCUdto(Friend);
+            dtoFriend.QuotesId.Remove(quote.QuoteId);
+
             Friend = await _service.UpdateFriendAsync(null, dtoFriend);
 
             return Page();
