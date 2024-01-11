@@ -803,7 +803,8 @@ public class csFriendsDbRepos
                 (i.Quote == itemDto.Quote)));
             var _existingItem = await _query2.FirstOrDefaultAsync<csQuoteDbM>();
             if (_existingItem != null)
-                throw new ArgumentException($"Item already exist with id {_existingItem.QuoteId}");
+                return _existingItem;
+                //throw new ArgumentException($"Item already exist with id {_existingItem.QuoteId}");
 
             //transfer any changes from DTO to database objects
             //Update individual properties 
