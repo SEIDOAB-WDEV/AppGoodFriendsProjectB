@@ -1,0 +1,18 @@
+﻿@page
+@model AppRazor.Pages.ServiceAccessModel
+@{
+}
+<div class="container px-4 py-4">
+    <h2 class="pb-2 border-bottom">Modals</h2>
+    <p>Below are some examples of accessing FriendsService</p>
+    <form method="post" class="needs-validation" novalidate>
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-8">
+                <!-- Button trigger modal -->
+                <button type="submit" class="btn btn-primary" asp-page-handler="NewFriend">
+                    New Friend
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
